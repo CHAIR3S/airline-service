@@ -46,6 +46,24 @@ export class EmployeeService {
     return employee;
   }
 
+
+  async update(id: number, dto: CreateEmployeeDto): Promise<Employee> {
+    const employee = await this.findOne(id);
+  
+    const user = await this.userRepository.findOneBy({ userId: dto.userId });
+    const position = await this.positionRepository.findOneBy({ positionId: dto.positionId });
+  
+    if (!user) throw new NotFoundException(`User ID ${dto.userId} not found`);
+    if (!position) throw new NotFoundException(`Position ID ${dto.positionId} not found`);
+  
+    employee.user = user;
+    employee.position = position;
+    employee.salary = dto.salary;
+  
+    return this.employeeRepository.save(employee);
+  }
+  
+
   async remove(id: number): Promise<void> {
     const result = await this.employeeRepository.delete(id);
     if (result.affected === 0) {
