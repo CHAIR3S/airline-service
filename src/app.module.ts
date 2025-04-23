@@ -8,6 +8,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { EmployeePayrollModule } from './employee-payroll/employee-payroll.module';
 import { AircraftModule } from './aircraft/aircraft.module';
 import { FlightModule } from './flight/flight.module';
+import { FlightEmployeeModule } from './flight-employee/flight-employee.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { FlightModule } from './flight/flight.module';
     EmployeePayrollModule,
     AircraftModule,
     FlightModule,
+    FlightEmployeeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
