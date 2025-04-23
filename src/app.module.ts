@@ -10,6 +10,8 @@ import { AircraftModule } from './aircraft/aircraft.module';
 import { FlightModule } from './flight/flight.module';
 import { FlightEmployeeModule } from './flight-employee/flight-employee.module';
 import { EmployeeShiftModule } from './employee-shift/employee-shift.module';
+import { ClientModule } from './client/client.module';
+import { SeatModule } from './seat/seat.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { EmployeeShiftModule } from './employee-shift/employee-shift.module';
     FlightModule,
     FlightEmployeeModule,
     EmployeeShiftModule,
+    ClientModule,
+    SeatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
