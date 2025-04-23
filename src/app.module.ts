@@ -14,6 +14,8 @@ import { ClientModule } from './client/client.module';
 import { SeatModule } from './seat/seat.module';
 import { ReservationModule } from './reservation/reservation.module';
 import { TicketModule } from './ticket/ticket.module';
+import { PaymentModule } from './payment/payment.module';
+import { BaggageModule } from './baggage/baggage.module';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { TicketModule } from './ticket/ticket.module';
     SeatModule,
     ReservationModule,
     TicketModule,
+    PaymentModule,
+    BaggageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
