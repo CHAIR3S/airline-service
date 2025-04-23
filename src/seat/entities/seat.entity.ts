@@ -8,7 +8,7 @@ export enum SeatClass {
   FIRST = 'FIRST',
 }
 
-@Entity({ name: 'seat', schema: 'airline' })
+@Entity({ name: 'seat', schema: 'public' })
 export class Seat {
   @ApiProperty()
   @PrimaryGeneratedColumn({ name: 'seat_id' })

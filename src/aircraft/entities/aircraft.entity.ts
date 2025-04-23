@@ -7,7 +7,7 @@ export enum AircraftStatus {
   RETIRED = 'RETIRED',
 }
 
-@Entity({ name: 'aircraft', schema: 'airline' })
+@Entity({ name: 'aircraft', schema: 'public' })
 export class Aircraft {
   @ApiProperty({ example: 1 })
   @PrimaryGeneratedColumn({ name: 'aircraft_id' })

@@ -12,6 +12,8 @@ import { FlightEmployeeModule } from './flight-employee/flight-employee.module';
 import { EmployeeShiftModule } from './employee-shift/employee-shift.module';
 import { ClientModule } from './client/client.module';
 import { SeatModule } from './seat/seat.module';
+import { ReservationModule } from './reservation/reservation.module';
+import { TicketModule } from './ticket/ticket.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { SeatModule } from './seat/seat.module';
     EmployeeShiftModule,
     ClientModule,
     SeatModule,
+    ReservationModule,
+    TicketModule,
   ],
   controllers: [AppController],
   providers: [AppService],

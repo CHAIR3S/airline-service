@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Flight } from '../../flight/entities/flight.entity';
 import { Employee } from '../../employee/entities/employee.entity';
 
-@Entity({ name: 'flight_employee', schema: 'airline' })
+@Entity({ name: 'flight_employee', schema: 'public' })
 export class FlightEmployee {
   @ApiProperty()
   @PrimaryGeneratedColumn()

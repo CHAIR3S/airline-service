@@ -10,7 +10,7 @@ export enum FlightStatus {
   DELAYED = 'DELAYED',
 }
 
-@Entity({ name: 'flight', schema: 'airline' })
+@Entity({ name: 'flight', schema: 'public' })
 export class Flight {
   @ApiProperty()
   @PrimaryGeneratedColumn({ name: 'flight_id' })
