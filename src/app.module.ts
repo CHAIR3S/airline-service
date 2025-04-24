@@ -16,6 +16,8 @@ import { ReservationModule } from './reservation/reservation.module';
 import { TicketModule } from './ticket/ticket.module';
 import { PaymentModule } from './payment/payment.module';
 import { BaggageModule } from './baggage/baggage.module';
+import { CheckinModule } from './checkin/checkin.module';
+import { RefundRequestModule } from './refund-request/refund-request.module';
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { BaggageModule } from './baggage/baggage.module';
     TicketModule,
     PaymentModule,
     BaggageModule,
+    CheckinModule,
+    RefundRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
