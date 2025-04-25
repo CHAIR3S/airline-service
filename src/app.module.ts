@@ -18,6 +18,7 @@ import { PaymentModule } from './payment/payment.module';
 import { BaggageModule } from './baggage/baggage.module';
 import { CheckinModule } from './checkin/checkin.module';
 import { RefundRequestModule } from './refund-request/refund-request.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { RefundRequestModule } from './refund-request/refund-request.module';
     BaggageModule,
     CheckinModule,
     RefundRequestModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
