@@ -37,10 +37,9 @@ export class AuthService {
   refresh(token: string) {
     try {
 
-      console.log('Payload:', process.env.JWT_ACCESS_SECRET || 'clave-temporal'); // Verifica el payload aquí
-      
+
       const payload: JwtPayload = this.jwtService.verify(token, {
-        secret: process.env.JWT_ACCESS_SECRET || 'clave-temporal',
+        secret: process.env.JWT_REFRESH_SECRET || 'clave-temporal',
         // secret: process.env.JWT_REFRESH_SECRET,
       });
 

@@ -19,6 +19,7 @@ import { BaggageModule } from './baggage/baggage.module';
 import { CheckinModule } from './checkin/checkin.module';
 import { RefundRequestModule } from './refund-request/refund-request.module';
 import { AuthModule } from './auth/auth.module';
+import { TrackingModule } from './tracking/tracking.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { AuthModule } from './auth/auth.module';
     CheckinModule,
     RefundRequestModule,
     AuthModule,
+    TrackingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
