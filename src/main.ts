@@ -7,6 +7,7 @@ import { Reflector } from '@nestjs/core';
 import { RolGuard } from './auth/guards/rol.guard';
 import { ConfigService } from '@nestjs/config';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -50,6 +51,10 @@ async function bootstrap() {
 
   app.useWebSocketAdapter(new IoAdapter(app));
 
+
+  
+  app.use(bodyParser.json({ limit: '10mb' }));
+  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 
   await app.listen(process.env.PORT ?? 4000);

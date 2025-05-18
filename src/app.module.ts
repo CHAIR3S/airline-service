@@ -20,6 +20,7 @@ import { CheckinModule } from './checkin/checkin.module';
 import { RefundRequestModule } from './refund-request/refund-request.module';
 import { AuthModule } from './auth/auth.module';
 import { TrackingModule } from './tracking/tracking.module';
+import { PlaceModule } from './place/place.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { TrackingModule } from './tracking/tracking.module';
     RefundRequestModule,
     AuthModule,
     TrackingModule,
+    PlaceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

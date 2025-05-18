@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Aircraft } from '../../aircraft/entities/aircraft.entity';
+import { Place } from 'src/place/entities/place.entity';
 
 export enum FlightStatus {
   SCHEDULED = 'SCHEDULED',
@@ -16,13 +23,15 @@ export class Flight {
   @PrimaryGeneratedColumn({ name: 'flight_id' })
   flightId: number;
 
-  @ApiProperty()
-  @Column({ type: 'varchar', length: 100 })
-  origin: string;
+  @ApiProperty({ type: () => Place })
+  @ManyToOne(() => Place)
+  @JoinColumn({ name: 'origin_id' })
+  origin: Place;
 
-  @ApiProperty()
-  @Column({ type: 'varchar', length: 100 })
-  destination: string;
+  @ApiProperty({ type: () => Place })
+  @ManyToOne(() => Place)
+  @JoinColumn({ name: 'destination_id' })
+  destination: Place;
 
   @ApiProperty()
   @Column({ name: 'departure_time', type: 'timestamp' })
@@ -46,11 +55,23 @@ export class Flight {
   aircraft: Aircraft;
 
   @ApiProperty()
-  @Column({ name: 'last_latitude', type: 'decimal', precision: 10, scale: 6, nullable: true })
+  @Column({
+    name: 'last_latitude',
+    type: 'decimal',
+    precision: 10,
+    scale: 6,
+    nullable: true,
+  })
   lastLatitude: number;
 
   @ApiProperty()
-  @Column({ name: 'last_longitude', type: 'decimal', precision: 10, scale: 6, nullable: true })
+  @Column({
+    name: 'last_longitude',
+    type: 'decimal',
+    precision: 10,
+    scale: 6,
+    nullable: true,
+  })
   lastLongitude: number;
 
   @ApiProperty()

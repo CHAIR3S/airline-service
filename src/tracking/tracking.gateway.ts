@@ -13,11 +13,11 @@ export class TrackingGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
   handleConnection(client: Socket) {
-    console.log(`🟢 Cliente conectado: ${client.id}`);
+    console.log(`<<<< Cliente conectado: ${client.id} >>>>`);
   }
 
   handleDisconnect(client: Socket) {
-    console.log(`🔴 Cliente desconectado: ${client.id}`);
+    console.log(`!!!!! Cliente desconectado: ${client.id}`);
   }
 
   @SubscribeMessage('update-position')

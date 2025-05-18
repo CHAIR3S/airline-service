@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsEnum, IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsEnum, IsInt, IsNumber, IsOptional } from 'class-validator';
 import { FlightStatus } from '../entities/flight.entity';
 
 export class CreateFlightDto {
-  @ApiProperty()
-  @IsString()
-  origin: string;
+  @ApiProperty({ description: 'ID del lugar de origen (place_id)' })
+  @IsInt()
+  originId: number;
 
-  @ApiProperty()
-  @IsString()
-  destination: string;
+  @ApiProperty({ description: 'ID del lugar de destino (place_id)' })
+  @IsInt()
+  destinationId: number;
 
   @ApiProperty()
   @IsDateString()
