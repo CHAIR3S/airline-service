@@ -40,4 +40,9 @@ export class Place {
   @Column({ type: 'bytea', nullable: true })
   @Column({ type: 'bytea', nullable: true })
   photo?: Buffer;
+
+
+  @Column({ type: 'bigint', nullable: true })
+  discount?: number;
+
 }

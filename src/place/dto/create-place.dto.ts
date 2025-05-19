@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { WeatherType } from '../entities/place.entity';
 
@@ -33,5 +33,10 @@ export class CreatePlaceDto {
   @ApiProperty({ required: false, description: 'Imagen en base64' })
   @IsOptional()
   @IsString()
-  photo?: string; // base64 string
+  photo?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  discount?: number;
 }
