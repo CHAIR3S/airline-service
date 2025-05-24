@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Airline } from 'src/airline/entities/airline.entity';
 
 export enum AircraftStatus {
   ACTIVE = 'ACTIVE',
@@ -28,4 +29,11 @@ export class Aircraft {
     enum: AircraftStatus,
   })
   status: AircraftStatus;
+
+
+  @ApiProperty({ type: () => Airline })
+  @ManyToOne(() => Airline, { nullable: true })
+  @JoinColumn({ name: 'airline_id' })
+  airline: Airline;
+
 }

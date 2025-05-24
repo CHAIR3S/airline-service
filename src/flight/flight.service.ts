@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Flight } from './entities/flight.entity';
+import { Flight, FlightStatus } from './entities/flight.entity';
 import { CreateFlightDto } from './dto/create-flight.dto';
 import { UpdateFlightDto } from './dto/update-flight.dto';
 import { Aircraft } from '../aircraft/entities/aircraft.entity';
@@ -19,12 +19,12 @@ export class FlightService {
     const aircraft = await this.aircraftRepo.findOneBy({ aircraftId: dto.aircraftId });
     if (!aircraft) throw new NotFoundException(`Aircraft ID ${dto.aircraftId} not found`);
 
-    const flight = this.flightRepo.create({ ...dto, aircraft });
+    const flight = this.flightRepo.create({ ...dto, aircraft, origin: { placeId: dto.originId }, destination: { placeId: dto.destinationId }, airline: { airlineId: dto.airlineId } });
     return this.flightRepo.save(flight);
   }
 
   async findAll(): Promise<Flight[]> {
-    return this.flightRepo.find({ relations: ['aircraft'] });
+    return this.flightRepo.find({ relations: ['aircraft', 'airline'] });
   }
 
   async findOne(id: number): Promise<Flight> {
@@ -52,4 +52,43 @@ export class FlightService {
       throw new NotFoundException(`Flight ID ${id} not found`);
     }
   }
+
+
+  //Metodo para buscar vuelos por fecha y destino
+  async findByDateAndDestination(
+    date: string,
+    destinationId: number,
+    originId: number,
+  ){
+
+    console.log('findByDateAndDestination', date, destinationId, originId);
+
+    return this.flightRepo
+      .createQueryBuilder('flight')
+      .leftJoinAndSelect('flight.destination', 'destination')
+      .leftJoinAndSelect('flight.origin', 'origin')
+      .leftJoinAndSelect('flight.aircraft', 'aircraft')
+      .leftJoinAndSelect('flight.airline', 'airline')
+      .where('DATE(flight.departureTime) = :date', { date })
+      .andWhere('origin.placeId = :originId', { originId })
+      .andWhere('destination.placeId = :destinationId', { destinationId })
+      .andWhere('flight.status = :status', { status: FlightStatus.SCHEDULED })
+      .getMany();
+  }
+
+
+  async findScheduledFlightDates(originId: number, destinationId: number): Promise<string[]> {
+    const flights = await this.flightRepo
+      .createQueryBuilder('flight')
+      .select('DISTINCT DATE(flight.departure_time)', 'date')
+      .where('flight.origin_id = :originId', { originId })
+      .andWhere('flight.destination_id = :destinationId', { destinationId })
+      .andWhere('flight.status = :status', { status: FlightStatus.SCHEDULED })
+      .orderBy('date', 'ASC')
+    .getRawMany<{ date: string }>();
+
+    // array de strings ISO como "2025-06-01"
+    return flights.map((f) => f.date); 
+  }
+
 }

@@ -45,4 +45,29 @@ export class Place {
   @Column({ type: 'bigint', nullable: true })
   discount?: number;
 
+
+  
+  @ApiProperty()
+  @Column({
+    name: 'latitude',
+    type: 'decimal',
+    precision: 10,
+    scale: 6,
+    nullable: true,
+  })
+  latitude: number;
+
+
+  
+  @ApiProperty()
+  @Column({
+    name: 'longitude',
+    type: 'decimal',
+    precision: 10,
+    scale: 6,
+    nullable: true,
+  })
+  longitude: number;
+
+
 }

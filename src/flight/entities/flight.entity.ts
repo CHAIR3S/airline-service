@@ -8,6 +8,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Aircraft } from '../../aircraft/entities/aircraft.entity';
 import { Place } from 'src/place/entities/place.entity';
+import { Airline } from 'src/airline/entities/airline.entity';
 
 export enum FlightStatus {
   SCHEDULED = 'SCHEDULED',
@@ -22,6 +23,12 @@ export class Flight {
   @ApiProperty()
   @PrimaryGeneratedColumn({ name: 'flight_id' })
   flightId: number;
+
+  
+  @ApiProperty({ type: () => Airline })
+  @ManyToOne(() => Airline, { nullable: true })
+  @JoinColumn({ name: 'airline_id' })
+  airline: Airline;
 
   @ApiProperty({ type: () => Place })
   @ManyToOne(() => Place)

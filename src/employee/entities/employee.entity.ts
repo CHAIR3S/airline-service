@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 't
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../user/entities/user.entity';
 import { Position } from '../../position/entities/position.entity';
+import { Airline } from 'src/airline/entities/airline.entity';
 
 @Entity({ name: 'employee', schema: 'public' })
 export class Employee {
@@ -22,4 +23,11 @@ export class Employee {
   @ApiProperty()
   @Column({ type: 'numeric' })
   salary: number;
+
+
+  @ApiProperty({ type: () => Airline })
+  @ManyToOne(() => Airline, { nullable: true })
+  @JoinColumn({ name: 'airline_id' })
+  airline: Airline;
+
 }

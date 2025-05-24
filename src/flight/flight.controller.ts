@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { FlightService } from './flight.service';
 import { CreateFlightDto } from './dto/create-flight.dto';
 import { UpdateFlightDto } from './dto/update-flight.dto';
@@ -31,4 +31,24 @@ export class FlightController {
   remove(@Param('id') id: string) {
     return this.flightService.remove(+id);
   }
+
+
+  @Get('by-date-origin-destination/:date/:originId/:destinationId')
+  findByDateAndDestination(
+    @Param('date') date: string,
+    @Param('originId', ParseIntPipe) originId: number,
+    @Param('destinationId', ParseIntPipe) destinationId: number,
+  ) {
+    return this.flightService.findByDateAndDestination(date, destinationId, originId);
+  }
+
+
+  @Get('dates/:originId/:destinationId')
+  getScheduledFlightDates(
+    @Param('originId', ParseIntPipe) originId: number,
+    @Param('destinationId', ParseIntPipe) destinationId: number,
+  ) {
+    return this.flightService.findScheduledFlightDates(originId, destinationId);
+  }
+
 }

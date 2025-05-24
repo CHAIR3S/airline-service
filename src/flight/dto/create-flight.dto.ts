@@ -11,6 +11,10 @@ export class CreateFlightDto {
   @IsInt()
   destinationId: number;
 
+  @ApiProperty({ description: 'ID de la aerolínea (airline_id)' })
+  @IsInt()
+  airlineId: number;
+
   @ApiProperty()
   @IsDateString()
   departureTime: string;

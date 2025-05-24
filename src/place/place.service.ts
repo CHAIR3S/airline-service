@@ -54,4 +54,35 @@ export class PlaceService {
   remove(id: number) {
     return this.placeRepository.delete(id);
   }
+
+
+  async findNearestPlace(lat: number, lng: number): Promise<Place> {
+    console.log('lat', lat);
+    console.log('lng', lng);
+
+    const places = await this.placeRepository.find();
+
+    if (!places.length) throw new Error('No hay lugares registrados');
+
+    const toRad = (value: number) => (value * Math.PI) / 180;
+
+    const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+      const R = 6371; // km
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    };
+
+    return places.reduce((nearest, current) => {
+      const currentDist = getDistance(lat, lng, current.latitude, current.longitude);
+      const nearestDist = getDistance(lat, lng, nearest.latitude, nearest.longitude);
+      return currentDist < nearestDist ? current : nearest;
+    });
+  }
+
+
 }
