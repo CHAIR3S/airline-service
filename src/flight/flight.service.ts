@@ -28,7 +28,7 @@ export class FlightService {
   }
 
   async findOne(id: number): Promise<Flight> {
-    const flight = await this.flightRepo.findOne({ where: { flightId: id }, relations: ['aircraft'] });
+    const flight = await this.flightRepo.findOne({ where: { flightId: id }, relations: ['aircraft', 'origin', 'destination', 'airline'] });
     if (!flight) throw new NotFoundException(`Flight ID ${id} not found`);
     return flight;
   }
