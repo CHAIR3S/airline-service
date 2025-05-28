@@ -17,6 +17,17 @@ export class FlightController {
     return this.flightService.findAll();
   }
 
+  @Get('count-by-status')
+  countByStatus() {
+    return this.flightService.countByStatus();
+  }
+
+
+  @Get('active')
+  findAllActive() {
+    return this.flightService.findAllActive();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.flightService.findOne(+id);

@@ -4,10 +4,10 @@ import { FlightController } from './flight.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Flight } from './entities/flight.entity';
 import { Aircraft } from 'src/aircraft/entities/aircraft.entity';
-import { Place } from 'src/place/entities/place.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Flight, Aircraft, Place])],
+  imports: [TypeOrmModule.forFeature([Flight, Aircraft, Payment])],
   controllers: [FlightController],
   providers: [FlightService],
   exports: [FlightService],

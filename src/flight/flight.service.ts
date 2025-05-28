@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { Flight, FlightStatus } from './entities/flight.entity';
 import { CreateFlightDto } from './dto/create-flight.dto';
 import { UpdateFlightDto } from './dto/update-flight.dto';
 import { Aircraft } from '../aircraft/entities/aircraft.entity';
+import { Buffer } from 'buffer';
+import { Payment } from 'src/payment/entities/payment.entity';
+
+
 
 @Injectable()
 export class FlightService {
@@ -13,6 +17,8 @@ export class FlightService {
     private readonly flightRepo: Repository<Flight>,
     @InjectRepository(Aircraft)
     private readonly aircraftRepo: Repository<Aircraft>,
+    @InjectRepository(Payment)
+    private readonly paymentRepo: Repository<Payment>
   ) {}
 
   async create(dto: CreateFlightDto): Promise<Flight> {
@@ -26,6 +32,33 @@ export class FlightService {
   async findAll(): Promise<Flight[]> {
     return this.flightRepo.find({ relations: ['aircraft', 'airline'] });
   }
+
+
+async findAllActive(): Promise<Flight[]> {
+  const vuelos = await this.flightRepo.find({
+    where: {
+      status: Not(In([FlightStatus.ARRIVED, FlightStatus.CANCELLED]))
+    },
+    relations: ['aircraft', 'airline', 'origin', 'destination'],
+  });
+
+  const vuelosConvertidos = vuelos.map((vuelo) => {
+    const placePhoto : any = vuelo.destination.photo;
+
+    // Asegúrate de que existe y es tipo Buffer
+    if (placePhoto) {
+      const buffer = Buffer.from(placePhoto);
+      const base64 = buffer.toString('base64');
+      
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      (vuelo.destination as any).photoBase64 = `data:image/png;base64,${base64}`;
+    }
+
+    return vuelo;
+  });
+
+  return vuelosConvertidos;
+}
 
   async findOne(id: number): Promise<Flight> {
     const flight = await this.flightRepo.findOne({ where: { flightId: id }, relations: ['aircraft', 'origin', 'destination', 'airline'] });
@@ -90,5 +123,44 @@ export class FlightService {
     // array de strings ISO como "2025-06-01"
     return flights.map((f) => f.date); 
   }
+
+
+  async countByStatus() {
+    const result: { status: FlightStatus; count: string }[] = await this.flightRepo
+      .createQueryBuilder('flight')
+      .select('flight.status', 'status')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy('flight.status')
+      .getRawMany();
+
+    const statusCounts: Record<FlightStatus, number> = {
+      SCHEDULED: 0,
+      ARRIVED: 0,
+      CANCELLED: 0,
+      DEPARTED: 0,
+      DELAYED: 0,
+    };
+
+    for (const row of result) {
+      const status = row.status;
+      if (status in statusCounts) {
+        statusCounts[status] = parseInt(row.count, 10);
+      }
+    }
+
+
+
+    //Payment
+    const result2 = await this.paymentRepo
+      .createQueryBuilder('payment')
+      .select('SUM(payment.amount)', 'total')
+      .getRawOne<{ total: string }>();
+
+     const totalAmount = result2?.total ? parseFloat(result2.total) : 0;
+
+    return {statusCounts, totalAmount};
+  }
+
+
 
 }
