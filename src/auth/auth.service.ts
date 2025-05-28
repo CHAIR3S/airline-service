@@ -21,7 +21,7 @@ export class AuthService {
     return user;
   }
 
-  login(user: User) {
+  async login(user: User) {
     const payload = { sub: user.userId , email: user.email, role: user.role };
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_ACCESS_SECRET,
@@ -31,7 +31,16 @@ export class AuthService {
       secret: process.env.JWT_REFRESH_SECRET,
       expiresIn: '7d',
     });
-    return { accessToken, refreshToken };
+
+    let returnUser: User = new User();
+
+    if (accessToken && refreshToken){
+
+      returnUser = await this.userService.findOne(payload.sub);
+
+    }
+
+    return { accessToken, refreshToken, returnUser };
   }
 
   refresh(token: string) {
