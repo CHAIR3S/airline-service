@@ -8,7 +8,7 @@ import {
   import { ApiProperty } from '@nestjs/swagger';
   import { Reservation } from '../../reservation/entities/reservation.entity';
   
-  @Entity({ name: 'checkin', schema: 'airline' })
+  @Entity({ name: 'checkin', schema: 'public' })
   export class Checkin {
     @ApiProperty()
     @PrimaryGeneratedColumn({ name: 'checkin_id' })

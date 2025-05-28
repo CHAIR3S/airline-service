@@ -18,4 +18,8 @@ export class CreateReservationDto {
   @ApiProperty({ enum: ReservationStatus, default: ReservationStatus.RESERVED })
   @IsEnum(ReservationStatus)
   status: ReservationStatus;
+
+  
+  reservationDate: Date;
+
 }

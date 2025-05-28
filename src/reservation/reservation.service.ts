@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reservation } from './entities/reservation.entity';
@@ -29,10 +29,10 @@ export class ReservationService {
     if (!client) throw new NotFoundException(`Client ID ${dto.clientId} not found`);
     if (!flight) throw new NotFoundException(`Flight ID ${dto.flightId} not found`);
     if (!seat) throw new NotFoundException(`Seat ID ${dto.seatId} not found`);
-    if (!seat.available) throw new BadRequestException(`Seat ID ${dto.seatId} is not available`);
+    // if (!seat.available) throw new BadRequestException(`Seat ID ${dto.seatId} is not available`);
 
-    seat.available = false;
-    await this.seatRepo.save(seat);
+    // seat.available = false;
+    // await this.seatRepo.save(seat);
 
     const reservation = this.reservationRepo.create({ client, flight, seat, status: dto.status });
     return this.reservationRepo.save(reservation);

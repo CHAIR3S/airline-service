@@ -15,7 +15,7 @@ import {
     LOST = 'LOST',
   }
   
-  @Entity({ name: 'baggage', schema: 'airline' })
+  @Entity({ name: 'baggage', schema: 'public' })
   export class Baggage {
     @ApiProperty()
     @PrimaryGeneratedColumn({ name: 'baggage_id' })

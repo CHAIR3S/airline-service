@@ -16,7 +16,7 @@ import {
     PROCESSED = 'PROCESSED',
   }
   
-  @Entity({ name: 'refund_request', schema: 'airline' })
+  @Entity({ name: 'refund_request', schema: 'public' })
   export class RefundRequest {
     @ApiProperty()
     @PrimaryGeneratedColumn({ name: 'request_id' })

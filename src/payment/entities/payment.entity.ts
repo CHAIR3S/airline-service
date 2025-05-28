@@ -22,7 +22,7 @@ import {
     PENDING = 'PENDING',
   }
   
-  @Entity({ name: 'payment', schema: 'airline' })
+  @Entity({ name: 'payment', schema: 'public' })
   export class Payment {
     @ApiProperty()
     @PrimaryGeneratedColumn({ name: 'payment_id' })
