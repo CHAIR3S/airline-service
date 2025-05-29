@@ -22,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
 import { TrackingModule } from './tracking/tracking.module';
 import { PlaceModule } from './place/place.module';
 import { AirlineModule } from './airline/airline.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { AirlineModule } from './airline/airline.module';
     TrackingModule,
     PlaceModule,
     AirlineModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
