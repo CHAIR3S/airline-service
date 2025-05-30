@@ -1,5 +1,5 @@
 import { Controller, Post, Get, Param, Body, Delete, ParseFloatPipe, Put } from '@nestjs/common';
-import { PlaceService } from './place.service';
+import { PlaceResponseDto, PlaceService } from './place.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorators/public.decorator';
@@ -9,6 +9,12 @@ import { UpdatePlaceDto } from './dto/update-place.dto';
 @Controller('place')
 export class PlaceController {
   constructor(private readonly placeService: PlaceService) {}
+
+  @Get('with-discount')
+  findWithDiscount(): Promise<PlaceResponseDto[]> {
+    return this.placeService.findWithDiscount();
+  }
+
 
   @Post()
   create(@Body() dto: CreatePlaceDto) {

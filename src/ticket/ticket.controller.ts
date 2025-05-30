@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
@@ -12,15 +12,21 @@ export class TicketController {
     return this.ticketService.create(createTicketDto);
   }
 
-  @Get()
-  findAll() {
-    return this.ticketService.findAll();
+  @Get('by-user/:userId')
+  findByUser(@Param('userId', ParseIntPipe) userId: number) {
+    return this.ticketService.findTicketsByUserId(userId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.ticketService.findOne(+id);
   }
+
+  @Get()
+  findAll() {
+    return this.ticketService.findAll();
+  }
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {

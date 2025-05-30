@@ -1,9 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from './entities/place.entity';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
+
+// src/place/dto/place-response.dto.ts
+import { WeatherType } from './entities/place.entity';
+
+export class PlaceResponseDto {
+  placeId: number;
+  name: string;
+  city?: string;
+  country?: string;
+  weather?: WeatherType;
+  terminal?: string;
+  discount?: number;
+  latitude: number;
+  longitude: number;
+  photo: string | null;
+}
+
 
 @Injectable()
 export class PlaceService {
@@ -84,5 +101,18 @@ export class PlaceService {
     });
   }
 
+
+  async findWithDiscount(): Promise<PlaceResponseDto[]> {
+    const places = await this.placeRepository.find({
+      where: {
+        discount: MoreThan(0),
+      },
+    });
+
+    return places.map((place) => ({
+      ...place,
+      photo: place.photo ? Buffer.from(place.photo).toString('base64') : null,
+    }));
+  }
 
 }

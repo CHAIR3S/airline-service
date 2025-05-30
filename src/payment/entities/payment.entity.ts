@@ -2,9 +2,9 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    ManyToOne,
     JoinColumn,
     CreateDateColumn,
+    OneToOne,
   } from 'typeorm';
   import { ApiProperty } from '@nestjs/swagger';
   import { Reservation } from '../../reservation/entities/reservation.entity';
@@ -28,10 +28,11 @@ import {
     @PrimaryGeneratedColumn({ name: 'payment_id' })
     paymentId: number;
   
-    @ApiProperty({ type: () => Reservation })
-    @ManyToOne(() => Reservation)
+    @OneToOne(() => Reservation, (reservation) => reservation.payment)
     @JoinColumn({ name: 'reservation_id' })
     reservation: Reservation;
+
+
   
     @ApiProperty()
     @Column({ type: 'numeric' })

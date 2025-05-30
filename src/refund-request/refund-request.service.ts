@@ -4,7 +4,8 @@ import { Repository } from 'typeorm';
 import { RefundRequest } from './entities/refund-request.entity';
 import { CreateRefundRequestDto } from './dto/create-refund-request.dto';
 import { UpdateRefundRequestDto } from './dto/update-refund-request.dto';
-import { Payment } from '../payment/entities/payment.entity';
+import { Payment, PaymentStatus } from '../payment/entities/payment.entity';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 
 @Injectable()
 export class RefundRequestService {
@@ -13,11 +14,19 @@ export class RefundRequestService {
     private readonly refundRepo: Repository<RefundRequest>,
     @InjectRepository(Payment)
     private readonly paymentRepo: Repository<Payment>,
+    @InjectRepository(Reservation)
+    private readonly reservationRepo: Repository<Reservation>,
   ) {}
 
   async create(dto: CreateRefundRequestDto): Promise<RefundRequest> {
     const payment = await this.paymentRepo.findOneBy({ paymentId: dto.paymentId });
-    if (!payment) throw new NotFoundException(`Payment ID ${dto.paymentId} not found`);
+    if (!payment) {
+      throw new NotFoundException(`Payment ID ${dto.paymentId} not found`);
+    }
+
+    // Actualizar el estado del pago a REFUNDED
+    payment.status = PaymentStatus.REFUNDED;
+    await this.paymentRepo.save(payment);
 
     const refund = this.refundRepo.create({
       payment,
@@ -28,6 +37,7 @@ export class RefundRequestService {
 
     return this.refundRepo.save(refund);
   }
+
 
   async findAll(): Promise<RefundRequest[]> {
     return this.refundRepo.find({ relations: ['payment'] });

@@ -6,11 +6,13 @@ import {
     JoinColumn,
     CreateDateColumn,
     Unique,
+    OneToOne,
   } from 'typeorm';
   import { Client } from '../../client/entities/client.entity';
   import { Flight } from '../../flight/entities/flight.entity';
   import { Seat } from '../../seat/entities/seat.entity';
   import { ApiProperty } from '@nestjs/swagger';
+import { Payment } from 'src/payment/entities/payment.entity';
   
   export enum ReservationStatus {
     RESERVED = 'RESERVED',
@@ -47,5 +49,10 @@ import {
     @ApiProperty({ enum: ReservationStatus })
     @Column({ type: 'varchar', length: 20, enum: ReservationStatus })
     status: ReservationStatus;
+
+    @OneToOne(() => Payment, (payment) => payment.reservation)
+    payment: Payment;
+
+
   }
   
